@@ -5,11 +5,18 @@ connect_str = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;Accoun
 blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
 container_name = "datasets"
+
+try:
+    blob_service_client.delete_container(container_name)
+    print(f"Existing container '{container_name}' deleted.")
+except Exception:
+    pass
+
 try:
     container_client = blob_service_client.create_container(container_name)
     print(f"Container '{container_name}' created.")
 except Exception as e:
-    print(f"Container '{container_name}' already exists or error: {e}")
+    print(f"Container '{container_name}' error: {e}")
     container_client = blob_service_client.get_container_client(container_name)
 
 blob_client = container_client.get_blob_client("All_Diets.csv")
