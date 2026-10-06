@@ -1,9 +1,7 @@
 from azure.storage.blob import BlobServiceClient
 
-# Full standard Azurite connection string
 connect_str = "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFeqCnrC4xF...;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;"
 
-# THIS IS THE LINE YOU WERE MISSING:
 blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
 container_name = "datasets"
