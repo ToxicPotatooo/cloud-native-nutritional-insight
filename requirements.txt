@@ -1,0 +1,7 @@
+# requirements.txt
+azure-functions
+pandas
+numpy
+azure-storage-blob
+matplotlib
+seaborn
