@@ -6,7 +6,6 @@ __pycache__/
 *.py[cod]
 *%py.class
 
-.vscode/
 
 .env
 
@@ -14,3 +13,5 @@ __pycache__/
 Thumbs.db
 
 simulated_nosql/
+
+.python_packages
