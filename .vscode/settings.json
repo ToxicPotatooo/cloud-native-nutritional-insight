@@ -5,5 +5,8 @@
   "azureFunctions.projectLanguage": "Python",
   "azureFunctions.projectRuntime": "~4",
   "debug.internalConsoleOptions": "neverOpen",
-  "azureFunctions.projectLanguageModel": 2
+  "azureFunctions.projectLanguageModel": 2,
+  "appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"],
+  "appService.defaultWebAppToDeploy": "/subscriptions/214ce812-0943-437b-adaa-2185f8654508/resourceGroups/diet-analysis-rg/providers/Microsoft.Web/sites/diet-insights-webap",
+  "appService.deploySubpath": "."
 }
