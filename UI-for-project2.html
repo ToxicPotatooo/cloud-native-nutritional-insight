@@ -1,84 +1,219 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nutritional Insights</title>
-    <!-- Tailwind CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100">
-
-    <header class="bg-blue-600 p-4 text-white">
-        <h1 class="text-3xl font-semibold">Nutritional Insights</h1>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-blue-600 p-4 text-white shadow-md">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-3xl font-semibold">Nutritional Insights Dashboard</h1>
+        <div class="text-sm">
+          <p>
+            Last refreshed:
+            <span id="execution-time" class="font-bold text-yellow-300"
+              >Loading...</span
+            >
+          </p>
+        </div>
+      </div>
     </header>
 
-    <main class="container mx-auto p-6">
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">Explore Nutritional Insights</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-white p-4 shadow-lg rounded-lg">
-                    <h3 class="font-semibold">Bar Chart</h3>
-                    <p class="text-sm text-gray-600">Average macronutrient content by diet type.</p>
-                    <canvas id="barChart" class="w-full h-48"></canvas>
-                </div>
+    <main class="container mx-auto p-6 flex-grow">
+      <section class="mb-8 flex justify-between items-center">
+        <h2 class="text-2xl font-semibold">Cloud Data Insights</h2>
+        <button
+          onclick="fetchDataAndRenderCharts()"
+          class="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition"
+        >
+          Refresh Data
+        </button>
+      </section>
 
-                <div class="bg-white p-4 shadow-lg rounded-lg">
-                    <h3 class="font-semibold">Scatter Plot</h3>
-                    <p class="text-sm text-gray-600">Nutrient relationships (e.g., protein vs carbs).</p>
-                    <canvas id="scatterPlot" class="w-full h-48"></canvas>
-                </div>
+      <!-- Charts Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Bar Chart -->
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+          <h3 class="font-semibold text-lg mb-2">
+            Average Macronutrients by Diet
+          </h3>
+          <p class="text-sm text-gray-600 mb-4">
+            Protein, Carbs, and Fat content (g)
+          </p>
+          <div class="relative h-64">
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
 
-                <div class="bg-white p-4 shadow-lg rounded-lg">
-                    <h3 class="font-semibold">Heatmap</h3>
-                    <p class="text-sm text-gray-600">Nutrient correlations.</p>
-                    <div id="heatmap" class="w-full h-48"></div>
-                </div>
+        <!-- Pie Chart -->
+        <div class="bg-white p-6 shadow-lg rounded-lg">
+          <h3 class="font-semibold text-lg mb-2">Protein Distribution</h3>
+          <p class="text-sm text-gray-600 mb-4">
+            Share of average protein across diets
+          </p>
+          <div class="relative h-64">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
 
-                <div class="bg-white p-4 shadow-lg rounded-lg">
-                    <h3 class="font-semibold">Pie Chart</h3>
-                    <p class="text-sm text-gray-600">Recipe distribution by diet type.</p>
-                    <canvas id="pieChart" class="w-full h-48"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">Filters and Data Interaction</h2>
-            <div class="flex flex-wrap gap-4">
-                <input type="text" placeholder="Search by Diet Type" class="p-2 border rounded w-full sm:w-auto">
-                <select class="p-2 border rounded w-full sm:w-auto">
-                    <option value="all">All Diet Types</option>
-                    <option value="vegan">Vegan</option>
-                    <option value="keto">Keto</option>
-                    <!-- Add more options -->
-                </select>
-            </div>
-        </section>
-
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">API Data Interaction</h2>
-            <div class="flex flex-wrap gap-4">
-                <button class="bg-blue-600 text-white py-2 px-4 rounded">Get Nutritional Insights</button>
-                <button class="bg-green-600 text-white py-2 px-4 rounded">Get Recipes</button>
-                <button class="bg-purple-600 text-white py-2 px-4 rounded">Get Clusters</button>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="text-2xl font-semibold mb-4">Pagination</h2>
-            <div class="flex justify-center gap-2 mt-4">
-                <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Previous</button>
-                <button class="px-3 py-1 bg-blue-600 text-white rounded">1</button>
-                <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">2</button>
-                <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Next</button>
-            </div>
-        </section>
+        <!-- Scatter Plot -->
+        <div class="bg-white p-6 shadow-lg rounded-lg md:col-span-2">
+          <h3 class="font-semibold text-lg mb-2">Nutrient Relationships</h3>
+          <p class="text-sm text-gray-600 mb-4">
+            Comparing Protein vs. Carbs across different diets
+          </p>
+          <div class="relative h-80">
+            <canvas id="scatterChart"></canvas>
+          </div>
+        </div>
+      </div>
     </main>
 
     <footer class="bg-blue-600 p-4 text-white text-center mt-10">
-        <p>&copy; 2025 Nutritional Insights. All Rights Reserved.</p>
+      <p>&copy; 2026 Nutritional Insights. All Rights Reserved.</p>
     </footer>
 
-</body>
+    <script>
+      const API_URL =
+        "https://diet-analysis-func-2026-c6gebmdve7fyebas.canadacentral-01.azurewebsites.net/api/get_nutrition_data";
+
+      let barChartInstance = null;
+      let pieChartInstance = null;
+      let scatterChartInstance = null;
+
+      async function fetchDataAndRenderCharts() {
+        try {
+          document.getElementById("execution-time").innerText = "Fetching...";
+
+          // Fetch data from Azure Function
+          const response = await fetch(API_URL);
+          if (!response.ok) throw new Error("Failed to fetch data");
+
+          const data = await response.json();
+
+          // Process Data for Charts
+          const labels = data.map((item) => item.Diet_type);
+          const proteinData = data.map((item) => item["Protein(g)"]);
+          const carbsData = data.map((item) => item["Carbs(g)"]);
+          const fatData = data.map((item) => item["Fat(g)"]);
+
+          // Update Metadata Time
+          document.getElementById("execution-time").innerText =
+            new Date().toLocaleTimeString();
+
+          // Destroy existing charts if they exist (prevents duplication on refresh)
+          if (barChartInstance) barChartInstance.destroy();
+          if (pieChartInstance) pieChartInstance.destroy();
+          if (scatterChartInstance) scatterChartInstance.destroy();
+
+          // 1. Render Bar Chart
+          const barCtx = document.getElementById("barChart").getContext("2d");
+          barChartInstance = new Chart(barCtx, {
+            type: "bar",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: "Protein (g)",
+                  data: proteinData,
+                  backgroundColor: "#FF6384",
+                },
+                {
+                  label: "Carbs (g)",
+                  data: carbsData,
+                  backgroundColor: "#36A2EB",
+                },
+                { label: "Fat (g)", data: fatData, backgroundColor: "#FFCE56" },
+              ],
+            },
+            options: { responsive: true, maintainAspectRatio: false },
+          });
+
+          // 2. Render Pie Chart
+          const pieCtx = document.getElementById("pieChart").getContext("2d");
+          pieChartInstance = new Chart(pieCtx, {
+            type: "pie",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  data: proteinData,
+                  backgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56",
+                    "#4BC0C0",
+                    "#9966FF",
+                    "#FF9F40",
+                    "#C9CBCF",
+                  ],
+                },
+              ],
+            },
+            options: { responsive: true, maintainAspectRatio: false },
+          });
+
+          // 3. Render Scatter Chart
+          const scatterCtx = document
+            .getElementById("scatterChart")
+            .getContext("2d");
+          // Map data into {x: carbs, y: protein} for scatter plot
+          const scatterData = data.map((item) => ({
+            x: item["Carbs(g)"],
+            y: item["Protein(g)"],
+            label: item.Diet_type,
+          }));
+
+          scatterChartInstance = new Chart(scatterCtx, {
+            type: "scatter",
+            data: {
+              datasets: [
+                {
+                  label: "Diet Types",
+                  data: scatterData,
+                  backgroundColor: "#4BC0C0",
+                  pointRadius: 8,
+                  pointHoverRadius: 12,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: { title: { display: true, text: "Carbs (g)" } },
+                y: { title: { display: true, text: "Protein (g)" } },
+              },
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      return `${context.raw.label}: Protein ${context.raw.y}g, Carbs ${context.raw.x}g`;
+                    },
+                  },
+                },
+              },
+            },
+          });
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          document.getElementById("execution-time").innerText =
+            "Error loading data";
+          alert(
+            "Failed to fetch data from Azure Function. Check the console for details.",
+          );
+        }
+      }
+
+      // Load data when page loads
+      window.onload = fetchDataAndRenderCharts;
+    </script>
+  </body>
 </html>
